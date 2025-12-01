@@ -12,6 +12,7 @@ COPY ${ENV_FILE} /tmp/environment.yml
 
 # Create conda environment with libmamba solver for faster dependency resolution
 RUN conda install -n base -c conda-forge mamba && \
+    mamba env create -f /tmp/environment.yml --dry-run && \
     mamba env create -f /tmp/environment.yml && \
     conda clean -afy && \
     rm /tmp/environment.yml
