@@ -10,11 +10,11 @@ LABEL org.opencontainers.image.description="Zeppelin test environment with Pytho
 # Copy environment file
 COPY ${ENV_FILE} /tmp/environment.yml
 
-# Create conda environment with libmamba solver for faster dependency resolution
-# 최신 conda는 libmamba가 기본이라 바로 생성 가능
-RUN conda env create -f /tmp/environment.yml && \
+RUN conda config --set channel_priority strict && \
+    conda install -n base -c conda-forge mamba && \
+    mamba env create -f /tmp/environment.yml && \
     conda clean -afy && \
-    rm /tmp/environment.yml
+    rm /tmp/environment.yml \
 
 # Install R IRkernel
 RUN /opt/conda/envs/python_3_with_R/bin/R -e "IRkernel::installspec()"
