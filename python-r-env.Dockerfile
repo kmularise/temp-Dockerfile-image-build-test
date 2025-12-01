@@ -17,12 +17,19 @@ RUN conda config --set channel_priority strict && \
     rm /tmp/environment.yml
 
 # Install R IRkernel
-RUN /opt/conda/envs/python_3_with_R/bin/R -e "IRkernel::installspec()"
+RUN conda run -n python_3_with_R R -e "IRkernel::installspec()"
 
-# Install Java 11 for Maven
+# Install Java 11 for Maven (Adoptium/Temurin)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-        openjdk-11-jdk \
+        wget \
+        apt-transport-https \
+        gnupg && \
+    wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /usr/share/keyrings/adoptium.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb bookworm main" > /etc/apt/sources.list.d/adoptium.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+        temurin-11-jdk \
         git \
         curl && \
     apt-get clean && \
