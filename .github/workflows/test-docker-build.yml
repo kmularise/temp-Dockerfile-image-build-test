@@ -1,0 +1,29 @@
+name: Test Docker Image Build
+
+on:
+  push:
+    branches:
+      - 'feature/**'  # 또는 본인 브랜치
+  pull_request:
+  workflow_dispatch:  # 수동 실행 가능
+
+jobs:
+  build-docker-image:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --progress=plain \
+            -f python-r-env.Dockerfile \
+            -t zeppelin-python-r-env:test \
+            .
+
+      - name: Test Docker image
+        run: |
+          docker run --rm zeppelin-python-r-env:test python --version
+          docker run --rm zeppelin-python-r-env:test R --version
+          docker run --rm zeppelin-python-r-env:test conda list -n python_3_with_R
