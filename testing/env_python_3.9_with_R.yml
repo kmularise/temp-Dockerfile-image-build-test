@@ -6,3 +6,7 @@ dependencies:
   - numpy
   - pandas
   - r-base
+  - r-irkernel
+  - jupyter
+  - matplotlib
+  - scipy
