@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:latest
+FROM continuumio/miniconda3:24.1.2-0
 
 # Build argument for environment file path
 ARG ENV_FILE=testing/env_python_3.9_with_R.yml
