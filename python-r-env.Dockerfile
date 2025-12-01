@@ -14,7 +14,7 @@ RUN conda config --set channel_priority strict && \
     conda install -n base -c conda-forge mamba && \
     mamba env create -f /tmp/environment.yml && \
     conda clean -afy && \
-    rm /tmp/environment.yml \
+    rm /tmp/environment.yml
 
 # Install R IRkernel
 RUN /opt/conda/envs/python_3_with_R/bin/R -e "IRkernel::installspec()"
