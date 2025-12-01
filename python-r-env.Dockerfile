@@ -11,8 +11,10 @@ LABEL org.opencontainers.image.description="Zeppelin test environment with Pytho
 COPY ${ENV_FILE} /tmp/environment.yml
 
 # Create conda environment with libmamba solver for faster dependency resolution
-RUN conda install -n base -c conda-forge mamba && \
-    mamba env create -f /tmp/environment.yml --dry-run && \
+# conda-forge만 사용하도록 강제
+RUN conda config --remove channels defaults && \
+    conda config --add channels conda-forge && \
+    conda install -n base -c conda-forge mamba && \
     mamba env create -f /tmp/environment.yml && \
     conda clean -afy && \
     rm /tmp/environment.yml
