@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3:24.1.2-0
+FROM continuumio/miniconda3:latest
 
 # Build argument for environment file path
 ARG ENV_FILE=testing/env_python_3.9_with_R.yml
@@ -11,11 +11,8 @@ LABEL org.opencontainers.image.description="Zeppelin test environment with Pytho
 COPY ${ENV_FILE} /tmp/environment.yml
 
 # Create conda environment with libmamba solver for faster dependency resolution
-# conda-forge만 사용하도록 강제
-RUN conda config --remove channels defaults && \
-    conda config --add channels conda-forge && \
-    conda install -n base -c conda-forge mamba && \
-    mamba env create -f /tmp/environment.yml && \
+# 최신 conda는 libmamba가 기본이라 바로 생성 가능
+RUN conda env create -f /tmp/environment.yml && \
     conda clean -afy && \
     rm /tmp/environment.yml
 
